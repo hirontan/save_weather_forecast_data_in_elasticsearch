@@ -1,0 +1,2 @@
+# save_weather_forecast_data_in_elasticsearch
+Lambdaを利用して、天気予報データをElasticSearchに保存する
