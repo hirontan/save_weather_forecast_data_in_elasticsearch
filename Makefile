@@ -15,7 +15,7 @@ network:
 generate-env:
 	$(eval LOCALSTACK_ID := $(shell docker ps | grep $(LOCALSTACK_NAME) | cut -f 1 -d ' '))
 	$(eval LOCALSTACK_IP := $(shell docker exec -it $(LOCALSTACK_ID) hostname -i))
-i	echo '{ "$(STACKNAME)Function": { "Env": "dev", "S3_URL": "http://$(LOCALSTACK_IP):4572", "BucketName": "$(BUCKETNAME)", "S3_REGION": "us-east-1" } }' > ./env.json
+i	echo '{ "$(STACKNAME)Function": { "Env": "dev", "S3_URL": "http://$(LOCALSTACK_IP):4572", "S3_REGION": "us-east-1", "BucketName": "$(BUCKETNAME)" } }' > ./env.json
 
 install-pkgs:
 	bundle install --gemfile $(NAME)/Gemfile --path build
