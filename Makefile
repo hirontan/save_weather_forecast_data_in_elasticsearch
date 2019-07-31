@@ -5,6 +5,7 @@ LOCALSTACK_NAME := $(NAME)_localstack
 
 start-platform:
 	docker-compose up -d
+	PATH=$(PATH) aws --endpoint-url=http://localhost:4572 s3api create-bucket --bucket $(BUCKETNAME)
 
 stop-platform:
 	docker-compose down
