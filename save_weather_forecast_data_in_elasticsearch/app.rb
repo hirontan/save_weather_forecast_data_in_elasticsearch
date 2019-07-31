@@ -2,17 +2,24 @@ require 'bundler/setup'
 
 require 'json'
 require 'httparty'
+require 'date'
 
 def lambda_handler(event:, context:)
   event['Records'].each do |record|
     city = take_city_from_record(record)
-    get_weather_forcast_data(city)
-    puts city
+    data = get_weather_forcast_data(city)
+    data.each do |l|
+      puts l.inspect
+    end
   end
 
   display_message(200, "OK")
 rescue => error
   display_message(400, error.message)
+end
+
+def save_time
+  DateTime.now.new_offset(Rational(9, 24)).strftime('%Y%m%d')
 end
 
 def display_message(status_code, message)
@@ -31,7 +38,7 @@ end
 def get_weather_forcast_data(city)
   apikey = ENV['APIKEY']
   raise "Does not exist APIKEY" if apikey == 'None'
-  response = HTTParty.get("https://api.openweathermap.org/data/2.5/forecast?q=#{city}&appid=#{apikey}")
+  response = HTTParty.get("https://api.openweathermap.org/data/2.5/forecast?q=#{city},jp&appid=#{apikey}")
   raise "[city: #{city}] Failed to get information" if response.code != 200
-  puts response.body
+  JSON.parse(response.body)['list']
 end
