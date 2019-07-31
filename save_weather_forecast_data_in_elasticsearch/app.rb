@@ -30,7 +30,8 @@ end
 
 def get_weather_forcast_data(city)
   apikey = ENV['APIKEY']
-  raise if apikey == 'None'
+  raise "Does not exist APIKEY" if apikey == 'None'
   response = HTTParty.get("https://api.openweathermap.org/data/2.5/forecast?q=#{city}&appid=#{apikey}")
-  puts response.code
+  raise "[city: #{city}] Failed to get information" if response.code != 200
+  puts response.body
 end
