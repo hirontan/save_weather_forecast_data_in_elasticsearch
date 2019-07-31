@@ -1,9 +1,12 @@
+require 'bundler/setup'
+
 require 'json'
+require 'httparty'
 
 def lambda_handler(event:, context:)
   event['Records'].each do |record|
-    body = JSON.parse(record['body'])
-    city = body['city']
+    city = take_city_from_record(record)
+    get_weather_forcast_data(city)
     puts city
   end
 
@@ -19,4 +22,15 @@ def display_message(status_code, message)
       message: message
     }.to_json
   }
+end
+
+def take_city_from_record(record)
+  JSON.parse(record['body'])['city']
+end
+
+def get_weather_forcast_data(city)
+  apikey = ENV['APIKEY']
+  raise if apikey == 'None'
+  response = HTTParty.get("https://api.openweathermap.org/data/2.5/forecast?q=#{city}&appid=#{apikey}")
+  puts response.code
 end

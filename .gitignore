@@ -244,4 +244,7 @@ $RECYCLE.BIN/
 # env json
 env.json
 
+# bundler
+save_weather_forecast_data_in_elasticsearch/.bundle/*
+
 # End of https://www.gitignore.io/api/osx,linux,python,windows,pycharm,visualstudiocode
