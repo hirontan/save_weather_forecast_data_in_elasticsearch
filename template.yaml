@@ -23,6 +23,7 @@ Resources:
           S3_URL: !Ref S3_URL
           S3_REGION: !Ref S3_REGION
           BucketName: !Ref BucketName
+          APIKEY: !Ref APIKEY
 
 Parameters:
   # prod：本番環境 dev：開発環境（ローカル）
@@ -41,6 +42,9 @@ Parameters:
   BucketName:
     Type: String
     Default: weather_forcast_data
+  APIKEY:
+    Type: String
+    Default: None
 
 Outputs:
   SaveWeatherForecastDataInElasticsearchFunction:

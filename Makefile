@@ -15,10 +15,11 @@ network:
 generate-env:
 	$(eval LOCALSTACK_ID := $(shell docker ps | grep $(LOCALSTACK_NAME) | cut -f 1 -d ' '))
 	$(eval LOCALSTACK_IP := $(shell docker exec -it $(LOCALSTACK_ID) hostname -i))
-i	echo '{ "$(STACKNAME)Function": { "Env": "dev", "S3_URL": "http://$(LOCALSTACK_IP):4572", "S3_REGION": "us-east-1", "BucketName": "$(BUCKETNAME)" } }' > ./env.json
+	echo '{ "$(STACKNAME)Function": { "S3_URL": "http://$(LOCALSTACK_IP):4572", "S3_REGION": "us-east-1", "BucketName": "$(BUCKETNAME)" } }' > ./env.json
 
 install-pkgs:
 	bundle install --gemfile $(NAME)/Gemfile --path build
 
+# 実行時は、`make invoke APIKEY=xxxxxxxxxxxxx`
 invoke: network
-	sam local invoke --parameter-overrides ParameterKey=Env,ParameterValue=dev -t template.yaml --env-vars env.json --docker-network $(NETWORK) --event event.json
+	sam local invoke --parameter-overrides 'ParameterKey=Env,ParameterValue=dev ParameterKey=APIKEY,ParameterValue=$(APIKEY)' -t template.yaml --env-vars env.json --docker-network $(NETWORK) --event event.json
