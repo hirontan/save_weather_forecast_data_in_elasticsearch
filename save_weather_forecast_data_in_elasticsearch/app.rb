@@ -4,6 +4,7 @@ require 'json'
 require 'httparty'
 require 'date'
 require 'aws-sdk-s3'
+require 'elasticsearch'
 
 def lambda_handler(event:, context:)
   event['Records'].each do |record|
@@ -13,9 +14,7 @@ def lambda_handler(event:, context:)
 
     # バックアップ用でS3にファイル保存
     put_content('weather_forcast_data', "#{city}/#{dt}/weather-forecast-data_#{city}_#{dt}.json", data.to_s)
-    data['list'].each do |l|
-      puts l.inspect
-    end
+    save_data_in_es(data['list'], city, dt)
   end
 
   display_message(200, "OK")
@@ -60,6 +59,25 @@ def set_config()
     {
       endpoint: ENV['S3_URL']
     }
+  end
+end
+
+def save_data_in_es(data, city, dt)
+  client = connect_es
+  index_name = "weather_forecast_data_#{city.downcase}_#{dt.to_s}"
+  bulk_data = []
+  data.each do |d| 
+    bulk_data.push({ index: { _index: index_name, _type: '_doc', _id: d['dt'] } })
+    bulk_data.push d
+  end
+  client.bulk body: bulk_data
+end
+
+def connect_es()
+  if ENV['Env'] == 'prod'
+    Elasticsearch::Client.new url: ENV['ES_URL'], log: true
+  else
+    Elasticsearch::Client.new url: ENV['ES_URL'], log: true
   end
 end
 
