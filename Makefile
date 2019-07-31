@@ -10,7 +10,7 @@ stop-platform:
 	docker-compose down
 
 network:
-	$(eval NETWORK := $(shell docker network ls | grep $(PROJECT) | cut -f 1 -d ' '))
+	$(eval NETWORK := $(shell docker network ls | grep $(NAME) | cut -f 1 -d ' '))
 
 generate-env:
 	$(eval LOCALSTACK_ID := $(shell docker ps | grep $(LOCALSTACK_NAME) | cut -f 1 -d ' '))
