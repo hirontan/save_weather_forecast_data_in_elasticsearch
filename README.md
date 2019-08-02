@@ -1,19 +1,36 @@
 # save_weather_forecast_data_in_elasticsearch
 Lambdaを利用して、天気予報データをElasticSearchに保存する
 
+
 ```bash
 .
-├── README.md                   <-- This instructions file
-├── event.json                  <-- API Gateway Proxy Integration event payload
-├── hello_world                 <-- Source code for a lambda function
-│   ├── app.rb                  <-- Lambda function code
-│   ├── Gemfile                 <-- Ruby function dependencies
-├── template.yaml               <-- SAM template
-├── Gemfile                     <-- Ruby test/documentation dependencies
-└── tests                       <-- Unit tests
+├── README.md                                   <-- This instructions file
+├── event.json                                  <-- API Gateway Proxy Integration event payload
+├── save_weather_forecast_data_in_elasticsearch <-- Source code for a lambda function
+│   ├── app.rb                                  <-- Lambda function code
+│   ├── Gemfile                                 <-- Ruby function dependencies
+├── template.yaml                               <-- SAM template
+├── Gemfile                                     <-- Ruby test/documentation dependencies
+└── tests                                       <-- Unit tests
     └── unit
         └── test_handler.rb
 ```
+
+## 実行方法
+
+1. SAMのインストール
+  - [参考リンク](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+  - `Step 7: Install the AWS SAM CLI`が重要
+2. OpenWeatherのAPIKEYを取得
+  - [アカウントを作成](https://home.openweathermap.org/users/sign_up)
+  - [APIKEYの確認](https://home.openweathermap.org/api_keys)
+3. ソースコードを取得
+  - `$ git clone git@github.com:hirontan/save_weather_forecast_data_in_elasticsearch.git
+4. 実行
+```
+$ cd save_weather_forecast_data_in_elasticsearch
+$ make init APIKEY=xxxxxxxxxxxx(先ほど取得したAPIKEYを入力)
+````
 
 ## Requirements
 

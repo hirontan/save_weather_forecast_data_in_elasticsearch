@@ -28,5 +28,7 @@ install-pkgs:
 invoke: network
 	sam local invoke --parameter-overrides 'ParameterKey=Env,ParameterValue=dev ParameterKey=APIKEY,ParameterValue=$(APIKEY)' -t template.yaml --env-vars env.json --docker-network $(NETWORK) --event event.json
 
+init: start-platform generate-env install-pkgs invoke
+
 confirm-local-index:
 	curl http://localhost:9200/_cat/indices?v
