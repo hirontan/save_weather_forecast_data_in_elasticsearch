@@ -42,7 +42,7 @@ GEM
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     jmespath (1.6.2)
-    json (2.19.5)
+    json (2.19.9)
     logger (1.7.0)
     mini_mime (1.1.5)
     multi_json (1.13.1)
